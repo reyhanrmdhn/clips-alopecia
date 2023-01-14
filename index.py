@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, render_template
 from clips import Environment
 import os
 
@@ -17,8 +17,13 @@ def addnumber(number, answer):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24).hex()
 
-# import declared routes
 import route
+
+@app.route('/')
+def home():
+    env.reset()
+    return render_template('index.html')
+
 
 @app.route("/test", methods=['POST'])
 def test():

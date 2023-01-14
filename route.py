@@ -1,9 +1,12 @@
-from flask import render_template
+import mysql.connector
+from flask import jsonify, request, json, render_template
 from __main__ import app
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+con = mysql.connector.connect(
+  host="localhost", user="root",
+  password="", database="clips-alopecia"
+  )
+cursor = con.cursor(dictionary=True)
 
 @app.route('/faq')
 def faq():
@@ -24,3 +27,34 @@ def gejala18():
 @app.route('/gejala20')
 def gejala20():
     return render_template('question/gejala20.html')
+
+
+
+@app.route('/getOutput', methods=['POST'])
+def getOutput():
+    data = request.get_data(as_text=True)
+    try:
+        data = json.loads(data)
+        kodePenyakit = data['kodePenyakit']
+        queryGetOutput = "select * from tbl_penyakit where kode_penyakit = %s"
+        cursor.execute(queryGetOutput, (kodePenyakit))
+        hasil = cursor.fetchall()
+        for row in hasil:
+            output_penyakit = row["output_penyakit"]
+            ringkasan_penyakit = row["ringkasan_penyakit"]
+            ringkasan2_penyakit = row["ringkasan2_penyakit"]
+            ringkasan3_penyakit = row["ringkasan3_penyakit"]
+            is_diagnosis = row["is_diagnosis"]
+
+        return jsonify({
+            'output_penyakit' : output_penyakit,
+            'ringkasan_penyakit' : ringkasan_penyakit,
+            'ringkasan2_penyakit' : ringkasan2_penyakit,
+            'ringkasan3_penyakit' : ringkasan3_penyakit,
+            'is_diagnosis' : is_diagnosis
+        })
+    except:
+        return jsonify({
+            'status': 'error'
+        })
+
