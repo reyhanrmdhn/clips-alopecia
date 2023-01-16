@@ -12,6 +12,10 @@ cursor = con.cursor(dictionary=True)
 def faq():
     return render_template('faq.html')
 
+@app.route('/')
+def landingPage():
+    return render_template('landing-page.html')
+
 @app.route('/questionStart')
 def questionStart():
     return render_template('questionStart.html')

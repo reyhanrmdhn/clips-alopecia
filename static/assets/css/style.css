@@ -464,7 +464,7 @@ input#website {
     -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
-    background: url(../img/pattern_1.png) repeat;
+    background: url(../img/clipslogo-bnwtr.png) repeat;
     position: relative
 }
 
@@ -1032,9 +1032,11 @@ body.layout_2 {
 .layout_2 header {
     padding: 50px 0;
     text-align: center;
-    background: #5296cf no-repeat center right;
-    position: relative
+    background: #5296cf url(../img/clipslogo-bnwtr.png) no-repeat right;
+    background-size: 400px;
+    background-position: right;
 }
+
 
 @media (max-width: 767px) {
     .layout_2 header {

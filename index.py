@@ -19,7 +19,7 @@ app.config['SECRET_KEY'] = os.urandom(24).hex()
 
 import route
 
-@app.route('/')
+@app.route('/questions')
 def home():
     env.reset()
     return render_template('index.html')

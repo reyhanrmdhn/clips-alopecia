@@ -244,8 +244,11 @@ $(document).ready(function () {
                                     allGejala = result.hasil;
 
                                     gejalaPenyakit = gejalaPenyakit.split('-');
-                                    var gejalaYangTidakDialami = rule.filter(x => !gejalaPenyakit.includes(x));
-                                    var gejalaYangDialami = rule.filter(x => gejalaPenyakit.includes(x));
+                                    var gejalaYangDialami = rule.filter(x => !gejalaPenyakit.includes(x));
+                                    var gejalaYangTidakDialami = rule.filter(x => gejalaPenyakit.includes(x));
+
+                                    console.log(gejalaYangDialami);
+                                    console.log(gejalaYangTidakDialami);
 
                                     var html2 = '';
                                     for (i = 0; i < gejalaYangTidakDialami.length; i++) {
