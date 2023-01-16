@@ -180,28 +180,10 @@
     (assert (people_is parsial_androgeneticAlopecia2))
 )
 
-(defrule parsial_chronicCutaneousLupusErytematosus ;PENYAKIT 7
-    (number_1 9)
-    (not(number_2 17))
-    (number_3 18)
-    (number_4 20)
-    =>
-    (assert (people_is parsial_chronicCutaneousLupusErytematosus))
-)
-
-(defrule parsial_chronicCutaneousLupusErytematosus2 ;PENYAKIT 7
-    (number_1 9)
-    (not(number_2 17))
-    (number_3 18)
-    (not(number_4 20))
-    =>
-    (assert (people_is parsial_chronicCutaneousLupusErytematosus2))
-)
-
 (defrule parsial_androgeneticAlopecia3 ;PENYAKIT 1
     (number_1 9)
     (not(number_2 17))
-    (not(number_3 18))
+    (number_3 18)
     (number_4 20)
     =>
     (assert (people_is parsial_androgeneticAlopecia3))
@@ -210,10 +192,28 @@
 (defrule parsial_androgeneticAlopecia4 ;PENYAKIT 1
     (number_1 9)
     (not(number_2 17))
-    (not(number_3 18))
+    (number_3 18)
     (not(number_4 20))
     =>
     (assert (people_is parsial_androgeneticAlopecia4))
+)
+
+(defrule parsial_androgeneticAlopecia5 ;PENYAKIT 1
+    (number_1 9)
+    (not(number_2 17))
+    (not(number_3 18))
+    (number_4 20)
+    =>
+    (assert (people_is parsial_androgeneticAlopecia5))
+)
+
+(defrule parsial_androgeneticAlopecia6 ;PENYAKIT 1
+    (number_1 9)
+    (not(number_2 17))
+    (not(number_3 18))
+    (not(number_4 20))
+    =>
+    (assert (people_is parsial_androgeneticAlopecia6))
 )
 
 ; ----------------------------------  BRANCH 10  ------------------------------------------

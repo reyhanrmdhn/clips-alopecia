@@ -14,45 +14,7 @@ def faq():
 
 @app.route('/questionStart')
 def questionStart():
-    return render_template('question/questionStart.html')
-
-@app.route('/questionStart2')
-def questionStart2():
-    return render_template('question/questionStart2.html')
-
-@app.route('/gejala7')
-def gejala7():
-    return render_template('question/gejala7.html')
-
-@app.route('/gejala10')
-def gejala10():
-    return render_template('question/gejala10.html')
-
-@app.route('/gejala13')
-def gejala13():
-    return render_template('question/gejala13.html')
-
-@app.route('/gejala15')
-def gejala15():
-    return render_template('question/gejala15.html')
-
-@app.route('/gejala17')
-def gejala17():
-    return render_template('question/gejala17.html')
-
-@app.route('/gejala18')
-def gejala18():
-    return render_template('question/gejala18.html')
-
-@app.route('/gejala19')
-def gejala19():
-    return render_template('question/gejala19.html')
-
-@app.route('/gejala20')
-def gejala20():
-    return render_template('question/gejala20.html')
-
-
+    return render_template('questionStart.html')
 
 @app.route('/getRule', methods=['POST'])
 def getRule():
@@ -81,7 +43,7 @@ def getGejalaSelanjutnya():
         cursor.execute(querygetGejalaSelanjutnya, (kodeGejala,))
         hasil = cursor.fetchall()
         for row in hasil:
-            kode_gejala = row["kode_gejala"],
+            kode_gejala = row["kode_gejala"]
             gejala = row["gejala"]
             pertanyaan_gejala = row["pertanyaan_gejala"]
 
@@ -100,23 +62,21 @@ def getOutput():
     data = request.get_data(as_text=True)
     try:
         data = json.loads(data)
-        kodePenyakit = data['kodePenyakit']
+        kodePenyakitHasil = data['kodePenyakitHasil']
         queryGetOutput = "select * from tbl_penyakit where kode_penyakit = %s"
-        cursor.execute(queryGetOutput, (kodePenyakit))
+        cursor.execute(queryGetOutput, (kodePenyakitHasil,))
         hasil = cursor.fetchall()
         for row in hasil:
-            output_penyakit = row["output_penyakit"]
+            nama_penyakit = row["nama_penyakit"]
             ringkasan_penyakit = row["ringkasan_penyakit"]
             ringkasan2_penyakit = row["ringkasan2_penyakit"]
             ringkasan3_penyakit = row["ringkasan3_penyakit"]
-            is_diagnosis = row["is_diagnosis"]
 
         return jsonify({
-            'output_penyakit' : output_penyakit,
+            'nama_penyakit' : nama_penyakit,
             'ringkasan_penyakit' : ringkasan_penyakit,
             'ringkasan2_penyakit' : ringkasan2_penyakit,
             'ringkasan3_penyakit' : ringkasan3_penyakit,
-            'is_diagnosis' : is_diagnosis
         })
     except:
         return jsonify({
@@ -150,15 +110,12 @@ def getDeskripsiGejala():
     data = request.get_data(as_text=True)
     try:
         data = json.loads(data)
-        kodeGejalaDeskripsi = data['kodeGejalaDeskripsi']
-        querygetDeskripsiGejala = "select * from tbl_gejala where kode_gejala = %s"
-        cursor.execute(querygetDeskripsiGejala, (kodeGejalaDeskripsi,))
+        querygetDeskripsiGejala = "select * from tbl_gejala"
+        cursor.execute(querygetDeskripsiGejala)
         hasil = cursor.fetchall()
-        for row in hasil:
-            gejala = row["gejala"]
 
         return jsonify({
-            'gejala' : gejala
+            'hasil' : hasil,
         })
     except:
         return jsonify({

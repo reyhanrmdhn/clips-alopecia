@@ -11,7 +11,7 @@ $(document).ready(function () {
     var i = 0;
     var kodeRule = '';
     var kodeRuleAkhir = '';
-    let inputData = [];
+    var inputData = [];
     var kodeTerakhir = '';
     $(".next").on("click", function () {
         inputData[i] = $('input[name="question"]:checked').val();
@@ -21,7 +21,7 @@ $(document).ready(function () {
         } else {
             //  jika inputan == 0
             if (inputData[i].includes("0_")) {
-                kodeAsli = inputData[i].split('_');
+                var kodeAsli = inputData[i].split('_');
                 inputData[i] = kodeAsli[1];
                 if (inputData[i] == kodeTerakhir) {
                     kodeRuleAkhir = kodeRuleAkhir + kodeAsli[0];
@@ -43,7 +43,7 @@ $(document).ready(function () {
             if (inputData[i] == kodeTerakhir) {
                 // kodeRuleAkhir = kodeRuleAkhir + kodeTerakhir;
                 var resultAkhir = kodeRuleAkhir.split('-');
-                for (let i = 0; i < resultAkhir.length; i++) {
+                for (i = 0; i < resultAkhir.length; i++) {
                     resultAkhir[i] = resultAkhir[i].replace("G", "");
                 }
                 sendData(resultAkhir, kodeRuleAkhir);
@@ -56,9 +56,67 @@ $(document).ready(function () {
                 })
                     .then((result) => result.json())
                     .then((result) => {
-                        res = result.result;
+                        var res = result.result;
                         // jika pertanyaan selanjutnya pilihan ganda
                         if (res.length > 1) {
+                            let listGejalaSelanjutnya = [];
+                            for (j = 0; j < res.length; j++) {
+                                var gejalaSelanjutnya = res[j].rule.split("-");
+                                listGejalaSelanjutnya[j] = gejalaSelanjutnya[i];
+                            }
+                            var gejalaSelanjutnya = [...new Set(listGejalaSelanjutnya)];
+                            var collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+                            gejalaSelanjutnya.sort((collator.compare));
+
+                            var listGejala = [];
+                            var listKodeGejala = [];
+                            fetch("/getDeskripsiGejala", {
+                                method: "POST",
+                                body: JSON.stringify({
+
+                                }),
+                            })
+                                .then((result) => result.json())
+                                .then((result) => {
+                                    var html = '';
+                                    html += '<div class="step">';
+                                    html += '<h3 class="main_question">';
+                                    html += '<i class="arrow_right"></i>';
+                                    html += 'Pilih satu gejala / kondisi yang kamu alami dari pilihan dibawah :';
+                                    html += '</h3>';
+                                    html += '<div class="form-group">';
+                                    allGejala = result.hasil
+                                    for (j = 0; j < gejalaSelanjutnya.length; j++) {
+                                        for (k = 0; k < allGejala.length; k++) {
+                                            if (gejalaSelanjutnya[j] == allGejala[k].kode_gejala) {
+                                                listKodeGejala[j] = allGejala[k].kode_gejala;
+                                                listGejala[j] = allGejala[k].gejala;
+
+                                                if (j == 0) {
+                                                    html += '<label class="container_radio version_2">' + listGejala[j] + '';
+                                                    html += '<input type="radio" name="question" value="' + listKodeGejala[j] + '" class="required question" />';
+                                                    html += '<span for="question" class="error validateError" style="display: none;">Required</span>';
+                                                    html += '<span class="checkmark"></span>';
+                                                    html += '</label>';
+                                                } else {
+                                                    html += '<label class="container_radio version_2">' + listGejala[j] + '';
+                                                    html += '<input type="radio" name="question" value="' + listKodeGejala[j] + '" class="required question" />';
+                                                    html += '<span class="checkmark"></span>';
+                                                    html += '</label>';
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                    html += '</div>';
+                                    html += '</div>';
+                                    $('#middle-wizard').html(html);
+
+                                    return;
+                                });
+                            console.log(listGejala);
+                            console.log(listKodeGejala);
+
 
                         } else {
                             var gejalaSelanjutnya = res[0].rule.split("-");
@@ -93,11 +151,12 @@ $(document).ready(function () {
                                         html += '</div>';
                                         $('#middle-wizard').html(html);
                                     });
-                                return false;
                             }
                         }
                     });
             }
+            // console.log(inputData[i]);
+            console.log(resultAkhir);
             console.log(kodeRuleAkhir);
             i++;
         }
@@ -113,108 +172,117 @@ $(document).ready(function () {
         })
             .then((result) => result.json())
             .then((result) => {
-                res = result.result;
+                var res = result.result;
                 if (res.length === 0) {
                     $('.modal-wrapper').toggleClass('open');
                     $('.page-wrapper').toggleClass('blur');
                     $('#body').css({ "overflow-y": "hidden" });
                     $('.output_penyakit').html('Your disease is not detected, please fill all of the answers');
-                    return;
                 } else {
                     getPenyakit(res, kodeRule);
-                }
+                    $('.modal-wrapper').toggleClass('open');
+                    $('.page-wrapper').toggleClass('blur');
+                    $('#body').css({ "overflow-y": "hidden" });
 
+                }
             });
-        return false;
     }
 
     function getPenyakit(kodePenyakit, gejalaPenyakit) {
+        var kodePenyakitParsial;
+        var kodePenyakitHasil = kodePenyakit[0];
+        for (i = 1; i < 11; i++) {
+            kodePenyakitHasil = kodePenyakitHasil.replace(i, "");
+        }
+        if (kodePenyakitHasil.includes("parsial_")) {
+            kodePenyakitParsial = 1;
+            kodePenyakitHasil = kodePenyakitHasil.replace("parsial_", "");
+        } else {
+            kodePenyakitParsial = 0;
+        }
+        console.log(kodePenyakitHasil);
+
         fetch("/getOutput", {
             method: "POST",
             body: JSON.stringify({
-                kodePenyakit: kodePenyakit,
+                kodePenyakitHasil: kodePenyakitHasil,
             }),
         })
             .then((result) => result.json())
             .then((result) => {
                 $('.hasil_penyakit').show();
-                if (result.is_diagnosis == 0) {
+                if (kodePenyakitParsial == 0) {
                     $('.header2').html('Cara Pengobatan : ');
                     $('.header3').html('Cara Pencegahan : ');
-                    $('.output_penyakit').html(result.output_penyakit);
+                    $('.output_penyakit').html('Penyakit yang kamu derita adalah ' + result.nama_penyakit);
                     $('.ringkasan_penyakit').html(result.ringkasan_penyakit);
                     $('.ringkasan2_penyakit').html(result.ringkasan2_penyakit);
                     $('.ringkasan3_penyakit').html(result.ringkasan3_penyakit);
                 } else {
-                    var output_penyakit = result.output_penyakit;
-                    var ringkasan_penyakit = result.ringkasan_penyakit;
-                    var kodePenyakitHasil = kodePenyakit[0];
-                    kodePenyakitHasil = kodePenyakitHasil.replace("parsial_", "");
-                    for (let i = 1; i < 11; i++) {
-                        kodePenyakitHasil = kodePenyakitHasil.replace(i, "");
-                    }
-                    console.log(kodePenyakitHasil);
+                    var output_penyakit = 'Gejala yang kamu alami mengarah pada jenis alopecia dengan tingkat bukti yang rendah atau bukan merupakan alopecia.';
+                    var ringkasan_penyakit = 'Jenis Alopecia yang kemungkinan kamu alami adalah ' + result.nama_penyakit;
+
                     fetch("/getGejalaHasil", {
                         method: "POST",
                         body: JSON.stringify({
                             kodePenyakitHasil: kodePenyakitHasil,
                         }),
                     })
-                        .then((result) => result.json())
-                        .then((result) => {
-                            var rule = result.rule;
+                        .then((result2) => result2.json())
+                        .then((result2) => {
+                            var rule = result2.rule;
                             rule = rule.split('-');
-                            gejalaPenyakit = gejalaPenyakit.split('-');
 
-                            let gejalaYangTidakDialami = rule.filter(x => !gejalaPenyakit.includes(x));
-                            let gejalaYangDialami = rule.filter(x => gejalaPenyakit.includes(x));
+                            fetch("/getDeskripsiGejala", {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    rule: rule,
+                                }),
+                            })
+                                .then((result) => result.json())
+                                .then((result) => {
+                                    allGejala = result.hasil;
+
+                                    gejalaPenyakit = gejalaPenyakit.split('-');
+                                    var gejalaYangTidakDialami = rule.filter(x => !gejalaPenyakit.includes(x));
+                                    var gejalaYangDialami = rule.filter(x => gejalaPenyakit.includes(x));
+
+                                    var html2 = '';
+                                    for (i = 0; i < gejalaYangTidakDialami.length; i++) {
+                                        for (j = 0; j < allGejala.length; j++) {
+                                            if (allGejala[j].kode_gejala == gejalaYangTidakDialami[i]) {
+                                                html2 += '- ' + allGejala[j].gejala + '<br>';
+
+                                            }
+                                        }
+
+                                    }
+
+                                    var html3 = '';
+                                    for (i = 0; i < gejalaYangDialami.length; i++) {
+                                        for (j = 0; j < allGejala.length; j++) {
+                                            if (allGejala[j].kode_gejala == gejalaYangDialami[i]) {
+                                                html3 += '- ' + allGejala[j].gejala + '<br>';
+
+                                            }
+                                        }
+
+                                    }
+                                    $('.ringkasan2_penyakit').html(html2);
+                                    $('.ringkasan3_penyakit').html(html3);
+                                    return false;
+                                });
 
                             $('.header2').html('Gejala yang dialami : ');
                             $('.header3').html('Gejala yang tidak dialami : ');
                             $('.output_penyakit').html(output_penyakit);
                             $('.ringkasan_penyakit').html(ringkasan_penyakit);
 
-                            html2 = '';
-                            for (let i = 0; i < gejalaYangDialami.length; i++) {
-                                kodeGejalaDeskripsi = gejalaYangDialami[i];
-                                fetch("/getDeskripsiGejala", {
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        kodeGejalaDeskripsi: kodeGejalaDeskripsi,
-                                    }),
-                                })
-                                    .then((result) => result.json())
-                                    .then((result) => {
-                                        deskripsiGejala = result.gejala;
-                                        html2 += '- ' + deskripsiGejala + '<br>';
-                                        $('.ringkasan2_penyakit').html(html2);
-                                    });
-                            }
-
-                            html3 = '';
-                            for (let i = 0; i < gejalaYangTidakDialami.length; i++) {
-                                kodeGejalaDeskripsi = gejalaYangTidakDialami[i];
-                                fetch("/getDeskripsiGejala", {
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        kodeGejalaDeskripsi: kodeGejalaDeskripsi,
-                                    }),
-                                })
-                                    .then((result) => result.json())
-                                    .then((result) => {
-                                        deskripsiGejala2 = result.gejala;
-                                        html3 += '- ' + deskripsiGejala2 + '<br>';
-                                        $('.ringkasan3_penyakit').html(html3);
-                                    });
-                            }
                             return false;
                         });
                 }
+                return false
             });
-
-        $('.modal-wrapper').toggleClass('open');
-        $('.page-wrapper').toggleClass('blur');
-        $('#body').css({ "overflow-y": "hidden" });
         return false;
     }
 
