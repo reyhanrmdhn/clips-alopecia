@@ -33,7 +33,7 @@ $(document).ready(function () {
         if (inputData[i] == kodeTerakhir) {
           kodeRuleAkhir = kodeRuleAkhir + inputData[i];
           kodeRule = kodeRule + inputData[i];
-        } else if (inputData[i] == 'G18') {
+        } else if (inputData[i-1] == 'G10' || inputData[i-1] == 'G12' && inputData[i] == 'G18') {
           kodeRuleAkhir = kodeRuleAkhir + inputData[i];
           kodeRule = kodeRule + inputData[i];
           //
@@ -42,6 +42,7 @@ $(document).ready(function () {
             resultAkhir[i] = resultAkhir[i].replace('G', '');
           }
           sendData(resultAkhir, kodeRuleAkhir);
+          return false;
         } else {
           kodeRuleAkhir = kodeRuleAkhir + inputData[i] + '-';
           kodeRule = kodeRule + inputData[i] + '-';
