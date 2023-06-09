@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="Sistem Pakar Pendeteksi Alopecia Berbasis CLIPS" />
+  <meta name="author" content="Juan Martin Limas Indrajaya" />
+  <meta http-equiv="Cache-control" content="no-cache">
+  <meta http-equiv="Expires" content="-1">
+  <title>SISTEM PAKAR PENDETEKSI ALOPECIA BERBASIS CLIPS</title>
+
+  <link rel="shortcut icon" href="static/assets/img/clipslogo.png" type="image/x-icon" />
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+
+  <link href="static/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="static/assets/css/menu.css" rel="stylesheet" />
+  <link href="static/assets/css/style.css" rel="stylesheet" />
+  <link href="static/assets/css/vendors.css" rel="stylesheet" />
+  <link href="static/assets/css/modal.css" rel="stylesheet" />
+
+  <script src="static/assets/js/modernizr.js"></script>
+</head>
+
+<body class="layout_2" id="body">
+  <div id="preloader">
+    <div data-loader="circle-side"></div>
+  </div>
+
+  <div id="loader_form">
+    <div data-loader="circle-side-2"></div>
+  </div>
+
+  <header>
+    <div class="container-fluid">
+      <h1>Sistem Pakar Pendeteksi Alopecia Berbasis CLIPS</h1>
+      <div class="top_elements">
+        <a href="javascript:void(0)" class="cd-nav-trigger">Menu<span class="cd-icon"></span></a>
+        <nav>
+          <ul class="cd-primary-nav">
+            <li>
+              <a href="index.html" class="animated_link">Sistem Pakar</a>
+            </li>
+            <li>
+              <a href="prevention.html" class="animated_link">Prevention Tips</a>
+            </li>
+            <li>
+              <a href="faq" class="animated_link">Faq</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-fluid">
+    <div id="form_container">
+      <div class="row justify-content-center">
+        <div class="col-lg-12">
+          <div id="wizard_container">
+            <div id="top-wizard">
+              <div id="progressbar"></div>
+            </div>
+            <form id="form">
+              <div id="middle-wizard">
+              </div>
+              <div id="bottom-wizard">
+                <button type="button" class="forward next">
+                  Next
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-wrapper">
+    <div class="modal">
+      <div class="head">
+        <a class="btn-close trigger-close" onclick="location.reload(true);"></a>
+      </div>
+      <div class="modalContent">
+        <h5 class="output_penyakit"></h5>
+
+        <div class="hasil_penyakit" style="display: none;">
+          <h5 style="font-size: 18px;">Deskripsi Penyakit : </h5>
+          <p class="ringkasan_penyakit"></p>
+          <!-- cara pengobatan -->
+          <h5 style="font-size: 18px;" class="headerPengobatan"></h5>
+          <p class="caraPengobatan"></p>
+          <!-- cara pencegahan -->
+          <h5 style="font-size: 18px;" class="headerPencegahan"></h5>
+          <p class="caraPencegahan"></p>
+          <!-- gejala dialami -->
+          <h5 style="font-size: 18px;" class="headerGejala"></h5>
+          <p class="gejalaPenyakitDialami"></p>
+          <!-- gejala tidak dialami -->
+          <h5 style="font-size: 18px;" class="headerGejala2"></h5>
+          <p class="gejalaPenyakitTidakDialami"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer_in clearfix">
+    <div class="container">
+      <p>Copyright © Juan Martin Limas Indrajaya 2022</p>
+      <ul>
+        <li><a href="faq.html" class="animated_link">Faq</a></li>
+        <li>
+          <a href="prevention.html" class="animated_link">Prevention Tips</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="cd-overlay-nav">
+    <span></span>
+  </div>
+  <div class="cd-overlay-content">
+    <span></span>
+  </div>
+
+
+  <script src="static/assets/js/jquery-3.4.1.min.js"></script>
+  <script src="static/assets/js/velocity.min.js"></script>
+  <script src="static/assets/js/common_functions.js"></script>
+  <script src="static/assets/js/script.js"></script>
+</body>
+
+</html>
